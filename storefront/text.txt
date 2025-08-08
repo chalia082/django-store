@@ -1,0 +1,3 @@
+SuperUser:
+  user - admin
+  pass - qwerty123
