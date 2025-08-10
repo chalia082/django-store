@@ -1,0 +1,10 @@
+from django.urls import path
+from .import views
+
+# URLConfig
+urlpatterns = [
+  path('products/', views.product_list),
+  path('collections/', views.collection_list),
+  path('products/<int:id>/', views.product_detail),
+  path('collections/<int:pk>/', views.collection_detail)
+]
