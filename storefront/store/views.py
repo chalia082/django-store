@@ -4,14 +4,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from .filters import ProductFilter
 from .models import Cart, CartItem, OrderItem, Product, Collection, Review
 from .pagination import DefaultPagination
-from .serializers import CartItemSerializer, CartSerializer, ProductSerializer, CollectionSerializer, ReviewSerializer
+from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, ProductSerializer, CollectionSerializer, ReviewSerializer
 
 
 class ProductViewSet(ModelViewSet):
@@ -41,11 +41,27 @@ class CollectionViewSet(ModelViewSet):
       return Response({'error': 'Collection cannot be deleted because it includes one or more products.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     return super().destroy(request, *args, **kwargs)
 
-class CartViewSet(ModelViewSet):
+class CartViewSet(CreateModelMixin, 
+                  RetrieveModelMixin, 
+                  DestroyModelMixin,
+                  GenericViewSet):
   queryset = Cart.objects.prefetch_related('items__product').all()
   serializer_class = CartSerializer
   
-  pprint(queryset)
+class CartItemViewSet(ModelViewSet):
+  
+  def get_serializer_class(self):
+    if self.request.method == 'POST':
+      return AddCartItemSerializer
+    return CartItemSerializer
+  
+  def get_queryset(self):
+    return CartItem.objects \
+      .filter(cart_id=self.kwargs['cart_pk']) \
+      .select_related('product')
+  
+  def get_serializer_context(self):
+    return {'cart_id': self.kwargs['cart_pk']}
 
 class ReviewViewSet(ModelViewSet):
   serializer_class = ReviewSerializer
