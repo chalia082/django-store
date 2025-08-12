@@ -59,9 +59,13 @@ class Customer(models.Model):
   class Meta:
     db_table = 'store_customer'
     ordering = ['user__first_name', 'user__last_name']
+    permissions = [
+      ('view_history', 'can view history')
+    ]
     # indexes = [
     #   models.Index(fields=['user__last_name', 'user__first_name'])
     # ]
+    
   def __str__(self):
     return f'{self.user.first_name} {self.user.last_name}'
     
