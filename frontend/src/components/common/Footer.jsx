@@ -63,7 +63,7 @@ const Footer = () => {
           </div>
 
           {/* Customer Service */}
-          <div>
+          {/* <div>
             <h4 className="text-lg font-semibold mb-4">Customer Service</h4>
             <ul className="space-y-2">
               <li>
@@ -87,7 +87,7 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
