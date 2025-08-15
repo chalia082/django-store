@@ -8,8 +8,8 @@ const CartSummary = ({
   isLoading,
   showClearButton = true 
 }) => {
-  const tax = totalPrice * 0.1; // 10% tax
-  const shipping = totalPrice > 50 ? 0 : 9.99; // Free shipping over $50
+  const tax = totalPrice * 0.08; // 8% tax to match checkout
+  const shipping = totalPrice >= 50 ? 0 : 5.99; // Free shipping over $50
   const finalTotal = totalPrice + tax + shipping;
 
   return (
@@ -25,7 +25,7 @@ const CartSummary = ({
 
         {/* Tax */}
         <div className="flex justify-between">
-          <span className="text-gray-600">Tax (10%)</span>
+          <span className="text-gray-600">Tax (8%)</span>
           <span className="font-medium">${tax.toFixed(2)}</span>
         </div>
 

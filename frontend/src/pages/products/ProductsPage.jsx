@@ -3,25 +3,21 @@ import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import useProducts from '../../hooks/useProducts';
 import ProductGrid from '../../components/products/ProductGrid';
-import ProductFilters from '../../components/products/ProductFilters';
 import { useCart } from '../../context/CartContext';
+
 const ProductsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('ordering') || '');
   const [likedProducts, setLikedProducts] = useState([]);
 
-  // Get cart context
   const { addToCart } = useCart();
 
-  // Get products hook (will fetch on mount)
   const { products, loading, error, pagination, fetchProducts } = useProducts();
 
-  // Handle search with manual fetch
   const handleSearchChange = useCallback((value) => {
     setSearchTerm(value);
     
-    // Update URL params
     const newParams = new URLSearchParams(searchParams);
     if (value) {
       newParams.set('search', value);
@@ -29,18 +25,15 @@ const ProductsPage = () => {
       newParams.delete('search');
     }
     setSearchParams(newParams);
-    
-    // Fetch with search
+
     const params = { search: value };
     if (sortBy) params.ordering = sortBy;
     fetchProducts(params);
   }, [searchParams, setSearchParams, sortBy, fetchProducts]);
 
-  // Handle sort change
   const handleSortChange = useCallback((value) => {
     setSortBy(value);
     
-    // Update URL params
     const newParams = new URLSearchParams(searchParams);
     if (value) {
       newParams.set('ordering', value);
@@ -49,13 +42,11 @@ const ProductsPage = () => {
     }
     setSearchParams(newParams);
     
-    // Fetch with sort
     const params = { ordering: value };
     if (searchTerm) params.search = searchTerm;
     fetchProducts(params);
   }, [searchParams, setSearchParams, searchTerm, fetchProducts]);
 
-  // Handle add to cart
   const handleAddToCart = useCallback(async (product) => {
     try {
       await addToCart(product.id, 1);
@@ -66,7 +57,6 @@ const ProductsPage = () => {
     }
   }, [addToCart]);
 
-  // Handle toggle like/favorite
   const handleToggleLike = useCallback((product) => {
     setLikedProducts(prev => {
       const isLiked = prev.includes(product.id);
@@ -80,9 +70,7 @@ const ProductsPage = () => {
     });
   }, []);
 
-  // Handle page change for pagination
   const handlePageChange = useCallback((url) => {
-    // Extract page number from URL and fetch
     const urlObj = new URL(url);
     const page = urlObj.searchParams.get('page');
     const params = { page };
@@ -93,11 +81,6 @@ const ProductsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Debug Components */}
-      {/* <EnvDebugger /> */}
-      {/* <DirectAPITest /> */}
-      {/* <AxiosAPITest /> */}
-
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Products</h1>
@@ -111,7 +94,7 @@ const ProductsPage = () => {
         )}
       </div>
 
-      {/* Simple search for now */}
+      {/* Search */}
       <div className="mb-6">
         <input
           type="text"

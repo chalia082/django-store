@@ -316,12 +316,32 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  // Clear cart locally without API call (used when backend already deleted the cart)
+  const clearCartLocally = async () => {
+    try {
+      localStorage.removeItem('cart_id');
+      dispatch({ type: CART_ACTIONS.CLEAR_CART });
+      
+      // Create new cart
+      const newCart = await cartAPI.createCart();
+      localStorage.setItem('cart_id', newCart.id);
+      dispatch({ type: CART_ACTIONS.SET_CART, payload: { cart: newCart, items: [] } });
+      
+      return { success: true };
+    } catch (error) {
+      const errorMessage = error.response?.data?.detail || 'Failed to create new cart';
+      dispatch({ type: CART_ACTIONS.SET_ERROR, payload: errorMessage });
+      return { success: false, error: errorMessage };
+    }
+  };
+
   const value = {
     ...state,
     addToCart,
     updateCartItem,
     removeFromCart,
     clearCart,
+    clearCartLocally,
   };
 
   return (

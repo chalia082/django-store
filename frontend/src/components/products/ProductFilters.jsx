@@ -20,7 +20,7 @@ const ProductFilters = ({
           <input
             type="text"
             placeholder="Search products..."
-            className="input-field pl-10"
+            className="input-field pl-20"
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
           />
