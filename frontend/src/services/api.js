@@ -188,8 +188,8 @@ export const cartAPI = {
 
 // Orders API
 export const ordersAPI = {
-  getOrders: async () => {
-    const response = await api.get(API_ENDPOINTS.STORE.ORDERS);
+  getOrders: async (params = {}) => {
+    const response = await api.get(API_ENDPOINTS.STORE.ORDERS, { params });
     return response.data;
   },
   

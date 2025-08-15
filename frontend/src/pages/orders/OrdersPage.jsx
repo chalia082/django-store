@@ -22,8 +22,9 @@ const OrdersPage = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await ordersAPI.getOrders();
-      setOrders(data);
+      const data = await ordersAPI.getOrders({ ordering: '-placed_at' });
+      const sortedOrders = data.sort((a, b) => new Date(b.placed_at) - new Date(a.placed_at));
+      setOrders(sortedOrders);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to fetch orders');
       toast.error('Failed to load orders');
@@ -78,7 +79,25 @@ const OrdersPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">My Orders</h1>
+        <div>
+          <h1 className="text-3xl font-bold">My Orders</h1>
+          <div className="flex items-center text-sm text-gray-500 mt-1">
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+              />
+            </svg>
+            Sorted by newest first
+          </div>
+        </div>
         <p className="text-gray-600">{orders.length} orders found</p>
       </div>
 
