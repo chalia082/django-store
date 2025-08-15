@@ -245,9 +245,43 @@ Default frontend dev server: `http://localhost:5173/` (may choose another port i
 
 ## Next steps / TODO
 
-- Add backend tests for order creation edge cases (concurrent cart deletion, insufficient inventory).
-- Add end-to-end tests for checkout flow (Stripe + order creation).
-- Improve error handling and UI feedback for failed payments.
+- AI assistant (chatbot)
+  - Goal: Provide an in-app assistant that can find a user's orders, check product stock, and place orders on behalf of a logged-in user (with explicit confirmation).
+  - UX: lightweight chat widget available in the header/footer; quick intents: "find my orders", "is X in stock?", "place order for item Y". Must prompt user for confirmation before placing orders.
+  - Backend: add authenticated endpoints to handle intents (e.g. `POST /api/ai/chat/`), or a small action API for each intent: `GET /store/orders/?user=<me>` (order lookup), `GET /store/products/?search=<q>` (inventory check), `POST /store/orders/` (create order). The server mediates any LLM or rules-based logic.
+  - Security & privacy: require JWT auth for any user-specific queries or order placement; never send PII or full user data to third-party LLMs without consent. Prefer server-side intent handlers and limit external calls.
+  - Implementation note: start with a rules/keyword-based assistant (fast, private) then optionally integrate an LLM (OpenAI/GPT) as an augmentation layer. Keep the core actions (place order, lookup) server-side.
+
+- Email notifications on order placement
+  - Goal: send confirmation emails when an order is successfully placed.
+  - Backend: hook into `order_created` signal (see `store/signals/handlers.py`) to enqueue/send an email. Use Django's `send_mail`/`EmailMessage` or integrate `django-anymail` for providers.
+  - Async: use a task queue (Celery + Redis) or Django's `send_mail` with `threading` for non-blocking behavior in development.
+  - Config: control SMTP/provider via env vars (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, DEFAULT_FROM_EMAIL). Add templates for plain text and HTML emails.
+
+- Favorites (Liked items) page
+  - Goal: allow users to save products as favorites and view them on a dedicated page.
+  - Backend: add `Favorite` model (user FK, product FK, timestamps). Provide a `FavoritesViewSet` with `GET /store/favorites/`, `POST /store/favorites/` and `DELETE /store/favorites/<id>/` (or `DELETE /store/favorites/?product=<id>`).
+  - Frontend: add `FavoritesPage.jsx` and wire up `favoritesAPI` in `frontend/src/services/api.js`. Update product cards (`ProductCard.jsx`) to call favorites API and persist liked state.
+  - UX: allow adding/removing favorites from product grid and product detail; show an empty-state CTA on favorites page.
+
+- Caching
+  - Goal: reduce DB and API load for high-read endpoints (product list, collections, product details) and expensive operations (inventory checks, aggregated queries).
+  - Backend (recommendation): use Redis as a cache backend via Django cache framework. Cache product list responses with keys that include filters/pagination and invalidate on product create/update/delete.
+  - Backend (orders): avoid caching user-specific order endpoints, but cache aggregated admin reports if needed.
+  - Frontend: use client-side caching/react-query/SWR for product data and revalidate on focus or on mutation. Respect HTTP cache headers where appropriate.
+  - Inventory checks: consider short-lived cache (5–30s) to reduce rapid repeated checks but ensure consistent reads for checkout.
+
+- Implementation priorities and notes
+  - Phase 1 (MVP):
+    1. Favorites model + API + frontend page
+    2. Order confirmation email via `order_created` signal (sync or background thread)
+    3. Basic caching for product list (Redis) and simple client-side caching (SWR)
+  - Phase 2 (Ops & UX):
+    1. Add AI assistant (start rules-based, then optionally LLM-backed). Secure actions on server-side.
+    2. Move email sending to async worker (Celery) for reliability
+    3. Add tests for favorites, emails, and caching invalidation
+  - Security: require authentication for all user-specific actions (favorites, order placement), add rate limiting for AI and order endpoints, and log audit events for programmatic order placements.
+
 
 ---
 
