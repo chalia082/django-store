@@ -1,11 +1,7 @@
 from django.shortcuts import render
-from store.models import Collection, Product
+from .tasks import notify_customers
+
 
 def say_hello(request):
-  
-  collection = Collection(pk=11)
-  collection.title = 'Games'
-  collection.featured_product = None
-  collection.save()
-  
+  notify_customers.delay('Hello')
   return render(request, 'hello.html', {'name': 'Deepanshu'})
