@@ -1,0 +1,55 @@
+amqp==5.3.1
+asgiref @ file:///home/conda/feedstock_root/build_artifacts/asgiref_1751974613617/work
+billiard==4.2.1
+celery==5.5.3
+certifi==2025.8.3
+cffi==1.17.1
+charset-normalizer==3.4.3
+click==8.2.1
+click-didyoumean==0.3.1
+click-plugins==1.1.1.2
+click-repl==0.3.0
+colorama==0.4.6
+cryptography==45.0.6
+defusedxml==0.7.1
+distlib==0.4.0
+Django @ file:///home/conda/feedstock_root/build_artifacts/django_1754495403823/work
+django-cors-headers @ file:///home/conda/feedstock_root/build_artifacts/django-cors-headers_1738928153436/work
+django-debug-toolbar==6.0.0
+django-filter==25.1
+django-render-block==0.11
+django-templated-email==3.1.0
+django-templated-mail==1.1.1
+djangorestframework==3.16.1
+djangorestframework_simplejwt==5.5.1
+djoser==2.3.3
+drf-nested-routers==0.94.2
+filelock==3.18.0
+idna==3.10
+kombu==5.5.4
+mysqlclient==2.2.7
+oauthlib==3.3.1
+packaging==25.0
+pillow==11.3.0
+pipenv==2025.0.4
+platformdirs==4.3.8
+prompt_toolkit==3.0.51
+pycparser==2.22
+PyJWT==2.10.1
+python-dateutil==2.9.0.post0
+python3-openid==3.2.0
+redis==6.4.0
+requests==2.32.4
+requests-oauthlib==2.0.0
+setuptools==80.9.0
+six==1.17.0
+social-auth-app-django==5.5.1
+social-auth-core==4.7.0
+sqlparse @ file:///home/conda/feedstock_root/build_artifacts/sqlparse_1734007102193/work
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_typing_extensions_1751643513/work
+tzdata==2025.2
+urllib3==2.5.0
+vine==5.1.0
+virtualenv==20.33.1
+wcwidth==0.2.13
+wheel==0.45.1
