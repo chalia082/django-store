@@ -125,14 +125,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, [login]);
 
-  // Logout function
   const logout = useCallback(() => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     dispatch({ type: AUTH_ACTIONS.LOGOUT });
   }, []);
 
-  // Clear error function
   const clearError = useCallback(() => {
     dispatch({ type: AUTH_ACTIONS.CLEAR_ERROR });
   }, []);
@@ -152,7 +150,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use auth context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
