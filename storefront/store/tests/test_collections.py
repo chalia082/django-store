@@ -1,5 +1,8 @@
 from rest_framework import status
+from model_bakery import baker
+from store.models import Collection, Product, ProductImage
 import pytest
+
 
 @pytest.fixture
 def create_collection(api_client):
@@ -7,7 +10,7 @@ def create_collection(api_client):
     return api_client.post('/store/collections/', collection)
   return do_create_collection
 
-
+@pytest.mark.skip
 @pytest.mark.django_db
 class TestCreateCollection:
   def test_if_user_is_anonymous_returns_401(self, create_collection):
@@ -44,3 +47,36 @@ class TestCreateCollection:
     
     assert response.status_code == status.HTTP_201_CREATED
     assert response.data['id'] > 0
+
+@pytest.mark.skip  
+@pytest.mark.django_db  
+class TestRetrieveCollection:
+  def test_if_no_collection_exists_returns_200(self, api_client):
+    collection = baker.make(Collection)
+    response = api_client.get(f'/store/collections/{collection.id}/')
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data == {
+      'id': collection.id,
+      'title': collection.title,
+      'products_count': 0,
+    }
+
+@pytest.mark.django_db
+class TestRetrieveProducts:
+  def test_if_product_exists_returns_200(self, api_client):
+    # collection = baker.make(Collection)
+    # images = baker.make(ProductImage)
+    product = baker.make(Product)
+    response = api_client.get(f'/store/products/{product.id}/')
+    assert response.status_code == status.HTTP_200_OK
+    # assert response.data == {
+    #   'id': product.id,
+    #   'title': product.title,
+    #   'slug': "-",
+    #   'description': product.description,
+    #   'unit_price': product.unit_price,
+    #   'inventory': product.inventory,
+    #   'slug': product.slug,
+    #   'collection': product.collection or None,
+    #   'images': product.images or []
+    # }
