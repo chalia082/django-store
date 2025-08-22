@@ -59,3 +59,4 @@ This is a Django-based backend project for an e-commerce/storefront application.
 - `storefront/` - Project settings and configuration
 
 ---
+# Heroku deployment Fri, Aug 22, 2025  9:23:40 AM
