@@ -4,7 +4,6 @@ from .common import *
 
 DEBUG = False
 
-# Add Whitenoise middleware to serve static files
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
