@@ -43,6 +43,7 @@ msgpack
 oauthlib
 pillow
 psutil
+mysqlclient
 psycopg2-binary
 pycparser
 Pygments
