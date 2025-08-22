@@ -40,10 +40,10 @@ locust
 MarkupSafe
 model-bakery
 msgpack
-mysqlclient
 oauthlib
 pillow
 psutil
+psycopg2-binary
 pycparser
 Pygments
 PyJWT
@@ -68,6 +68,7 @@ watchdog
 wcwidth
 websocket-client
 Werkzeug
+whitenoise
 wsproto
 zope.event
 zope.interface
