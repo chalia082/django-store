@@ -292,3 +292,4 @@ This project is provided for educational/demo purposes.
 ---
 
 If you'd like, I can also generate a lightweight Postman collection or OpenAPI spec extracted from the DRF views to make integration easier.
+# Heroku deployment Fri, Aug 22, 2025  9:22:02 AM
