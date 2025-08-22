@@ -6,7 +6,7 @@ DEBUG = False
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-ALLOWED_HOSTS = ['deep-storefront-prod-f1142162d85c.herokuapp.com']
+ALLOWED_HOSTS = ['deep-storefront-prod-7fff68b53dc6.herokuapp.com']
 
 DATABASES = {
     'default': dj_database_url.config()
