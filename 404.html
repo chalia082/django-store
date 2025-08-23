@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django Store</title>
+    <script>
+        // Redirect all 404s to index.html for SPA routing
+        const path = window.location.pathname;
+        const base = '/django-store';
+        
+        if (path !== base && path !== base + '/') {
+            const redirect = base + '/#' + path.replace(base, '');
+            window.location.replace(redirect);
+        } else {
+            window.location.replace(base + '/');
+        }
+    </script>
+</head>
+<body>
+    <div>Redirecting...</div>
+</body>
+</html>
