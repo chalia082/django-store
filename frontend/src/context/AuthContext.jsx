@@ -119,7 +119,8 @@ export const AuthProvider = ({ children }) => {
       
       return loginResult;
     } catch (error) {
-      const errorMessage = error.response?.data?.detail || 'Registration failed';
+      const errorMessage = error.response?.data?.email || error.response?.data?.password ||  'Registration failed';
+      
       dispatch({ type: AUTH_ACTIONS.AUTH_FAILURE, payload: errorMessage });
       return { success: false, error: errorMessage };
     }
